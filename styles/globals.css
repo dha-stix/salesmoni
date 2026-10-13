@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ground: #f5f7f2;
+  --color-ink: #0f1f18;
+  --color-muted: #5a6b62;
+  --color-line: #e1e7df;
+  --color-line-strong: #c8d3cb;
+  --color-brand: #0a6b4a;
+  --color-brand-dark: #085339;
+  --color-forest: #0b2e22;
+  --color-forest-soft: #143f30;
+  --color-forest-line: #3c6a59;
+  --color-sage: #c9ddd3;
+  --color-mint: #e3f2ea;
+  --color-mint-strong: #cfe6da;
+  --color-gold: #f4b63f;
+  --color-gold-soft: #fff4db;
+  --color-gold-line: #f2dfae;
+  --color-gold-ink: #5c4a1c;
+  --color-danger: #8e2a1b;
+  --color-danger-soft: #fbe4e0;
+
+  --font-sans: var(--font-figtree), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-figtree), sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
+  button:not(:disabled),
+  select,
+  [role="button"] {
+    cursor: pointer;
+  }
+}
+
+/* Reused style recipes, shared across pages and components. */
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-[1200px] px-5 sm:px-6;
+  }
+
+  .heading-display {
+    @apply font-display font-bold tracking-tight text-balance;
+  }
+
+  .eyebrow {
+    @apply text-[13px] font-bold uppercase tracking-[0.1em] text-brand;
+  }
+
+  .card {
+    @apply rounded-[20px] border border-line bg-white p-5 sm:p-6;
+  }
+
+  .field-label {
+    @apply text-[15px] font-semibold text-ink;
+  }
+
+  .field-input {
+    @apply min-h-[52px] w-full rounded-xl border border-line-strong bg-white px-4 text-base text-ink transition-colors placeholder:text-muted/70 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20;
+  }
+
+  .pill {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-[13px] font-bold whitespace-nowrap;
+  }
+
+  .table-head {
+    @apply text-[13px] font-bold uppercase tracking-[0.04em] text-muted;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Stroke icons inside a .draw-icons container draw themselves in. */
+  .draw-icons svg.lucide * {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: draw-stroke 1.4s ease-out 0.25s forwards;
+  }
+}
+
+@keyframes draw-stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .draw-icons svg.lucide * {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

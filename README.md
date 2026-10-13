@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SalesMoni
 
-## Getting Started
+Sales records and stock control for businesses. Built with Next.js (App Router), TypeScript,
+Tailwind CSS, Framer Motion, and Firebase.
 
-First, run the development server:
+## Run it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. The app needs the Firebase keys in `.env.local` to start.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Connect Firebase
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Create a project at https://console.firebase.google.com and add a **Web app**.
+2. Turn on **Authentication > Sign-in method > Email/Password**.
+3. Create a **Firestore Database** (production mode).
+4. Copy `.env.example` to `.env.local` and paste in the web app's config values.
+5. Paste the contents of `firestore.rules` into **Firestore > Rules** and publish.
+6. Restart `npm run dev`.
 
-## Learn More
+Firestore may ask you to create an index the first time sales are loaded; follow the link it
+prints in the browser console.
 
-To learn more about Next.js, take a look at the following resources:
+## Pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Route            | What it does                                                        |
+| ---------------- | ------------------------------------------------------------------- |
+| `/`              | Homepage: hero, features, how it works, reports, call to action     |
+| `/auth/login`    | Sign in with email and password                                     |
+| `/auth/register` | Create a business account (business name required)                  |
+| `/dashboard`     | Yearly sales chart, totals, top products, recent sales, low stock   |
+| `/products`      | Add, edit, search, and delete products with price and quantity      |
+| `/sales`         | Record a sale, browse any day on the calendar, download Excel files |
+| `/team`          | Add sales staff who record sales under their own names              |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Roles
 
-## Deploy on Vercel
+- **Owner**: everything, including products, team, and Excel downloads.
+- **Sales staff**: record sales and view products, the dashboard, and the team list.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To add staff, the owner enters their name and email on `/team`. When that person creates an
+account with the same email they join the owner's business instead of creating a new one.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project structure
+
+```
+app/                 Routes. Each page only composes components.
+components/          Page sections, grouped by page, plus shared ui/ and providers/.
+images/              All images, exported from images/index.ts.
+styles/globals.css   Theme colours, fonts, and reused style recipes (.card, .field-input, ...).
+lib/                 Types, helpers, data hooks, and Excel export.
+firebase.ts          Firebase initialisation.
+firebase-actions.ts  Every read and write the app performs.
+firestore.rules      Security rules to publish in the Firebase console.
+```
